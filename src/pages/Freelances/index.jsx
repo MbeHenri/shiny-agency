@@ -1,12 +1,14 @@
 import Card from "../../components/Card";
 import styled from "styled-components";
-import colors from "../../utils/style/colors";
 import { useEffect, useState } from "react";
 import { Loader } from "../../utils/Atoms";
+import { useContext } from "react";
+import { ThemeContext } from "../../utils/Context";
 
 function Freelances() {
   const [FreelanceProfiles, setFreelanceProfiles] = useState([]);
   const [isDataLoading, setDataLoading] = useState(false);
+  const { colors } = useContext(ThemeContext);
 
   useEffect(() => {
     setDataLoading(true);
@@ -23,7 +25,7 @@ function Freelances() {
   return (
     <div>
       <Title>Trouvez votre prestataire</Title>
-      <SubTitle>
+      <SubTitle colors={colors}>
         Chez Shiny nous réunissons les meilleurs profils pour vous.
       </SubTitle>
       <CardsContainer>
@@ -60,7 +62,7 @@ const Title = styled.h2`
 
 const SubTitle = styled.h3`
   text-align: center;
-  color: ${colors.secondary};
+  color: ${({ colors }) => colors.secondary};
 `;
 
 export default Freelances;

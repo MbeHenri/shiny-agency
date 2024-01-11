@@ -1,12 +1,14 @@
 import PropTypes from "prop-types";
 import DefaultPicture from "../assets/target.png";
 import styled from "styled-components";
-import colors from "../utils/style/colors";
+import { useContext } from "react";
+import { ThemeContext } from "../utils/Context";
 
 function Card({ label, title, picture }) {
+  const { colors } = useContext(ThemeContext);
   return (
-    <CardWrapper>
-      <CardLabel>{label}</CardLabel>
+    <CardWrapper colors={colors}>
+      <CardLabel colors={colors}>{label}</CardLabel>
       <CardBody>
         <CardImage src={picture} alt="freelance" />
         <CardTitle>{title}</CardTitle>
@@ -31,14 +33,18 @@ Card.defaultProps = {
 // design
 
 const CardLabel = styled.span`
-  color: ${colors.primary};
+  color: ${({ colors }) => colors.label_card};
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0em;
 `;
 
 const CardTitle = styled.span`
   font-size: 25px;
-  font-weight: bold;
+  font-weight: 400;
+  line-height: 29px;
+  letter-spacing: 0em;
 `;
 
 const CardImage = styled.img`
@@ -57,9 +63,9 @@ const CardBody = styled.div`
 `;
 
 const CardWrapper = styled.div`
-  padding: 1rem;
+  padding: 2.5rem;
   margin: 1rem;
-  background-color: ${colors.backgroundLight};
+  background-color: ${({ colors }) => colors.background};
   border-radius: 2rem;
 
   width: 18rem;
@@ -67,7 +73,7 @@ const CardWrapper = styled.div`
   transition: 200ms;
   &:hover {
     cursor: pointer;
-    box-shadow: 2px 2px 10px #e2e3e9;
+    box-shadow: 2px 2px 10px ${({ colors }) => colors.shadow_card};
   }
 `;
 export default Card;

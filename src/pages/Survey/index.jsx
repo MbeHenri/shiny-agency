@@ -1,17 +1,18 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Loader } from "../../utils/Atoms";
 import styled from "styled-components";
-import colors from "../../utils/style/colors";
+import { ThemeContext } from "../../utils/Context";
 
 function Survey() {
   const { questionNumber } = useParams();
   const questionNumberInt = parseInt(questionNumber);
-  const prevQuestionNumber =
-    questionNumberInt <= 1 ? 1 : questionNumberInt - 1;
+  const prevQuestionNumber = questionNumberInt <= 1 ? 1 : questionNumberInt - 1;
   const nextQuestionNumber = questionNumberInt + 1;
   const [surveyDatas, setSurveyDatas] = useState({});
   const [isDataLoading, setDataLoading] = useState(false);
+
+  const { colors } = useContext(ThemeContext);
 
   useEffect(() => {
     setDataLoading(true);
@@ -27,7 +28,9 @@ function Survey() {
 
   return (
     <QuestionBlock>
-      <QuestionTitle>Question {questionNumberInt}</QuestionTitle>
+      <QuestionTitle colors={colors}>
+        Question {questionNumberInt}
+      </QuestionTitle>
 
       <QuestionContent>
         {isDataLoading ? (
@@ -38,15 +41,17 @@ function Survey() {
       </QuestionContent>
 
       <div>
-        <QuestionLink to={`/survey/${prevQuestionNumber}`}>
+        <QuestionLink colors={colors} to={`/survey/${prevQuestionNumber}`}>
           Précedent
         </QuestionLink>
         {surveyDatas[nextQuestionNumber] ? (
-          <QuestionLink to={`/survey/${nextQuestionNumber}`}>
+          <QuestionLink colors={colors} to={`/survey/${nextQuestionNumber}`}>
             Suivant
           </QuestionLink>
         ) : (
-          <QuestionLink to="/results">Résultats</QuestionLink>
+          <QuestionLink colors={colors} to="/results">
+            Résultats
+          </QuestionLink>
         )}
       </div>
     </QuestionBlock>
@@ -58,7 +63,7 @@ const QuestionBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin : 4rem;
+  margin: 4rem;
 `;
 
 const QuestionContent = styled.div`
@@ -66,12 +71,12 @@ const QuestionContent = styled.div`
 `;
 
 const QuestionTitle = styled.h1`
-  text-decoration: underline ${colors.primary};
+  text-decoration: underline ${({ colors }) => colors.primary};
 `;
 
 const QuestionLink = styled(Link)`
-  color: black;
-  margin : 0px 0.5rem; 
+  color: ${({ colors }) => colors.on_background_body};
+  margin: 0px 0.5rem;
   text-decoration: underline;
 `;
 

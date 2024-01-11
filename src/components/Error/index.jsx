@@ -1,10 +1,14 @@
 import { ContainerBlock } from "../../utils/ContainerBlock";
 import styled from "styled-components";
 import error from "../../assets/undraw_page_not_found_su7k 1.svg";
+import { useContext } from "react";
+import { ThemeContext } from "../../utils/Context";
 
 function Error() {
+
+  const { colors } = useContext(ThemeContext);
   return (
-    <ContainerBlock>
+    <ContainerBlock colors={colors}>
       <ErrorDiv>
         <ErrorLabel>Oups...</ErrorLabel>
         <ErrorImage src={error} alt="freelance" />
@@ -24,12 +28,12 @@ const ErrorDiv = styled.div`
 
 const ErrorImage = styled.img`
   width: 100%;
+  margin: 2rem 0px;
 `;
 
 const ErrorLabel = styled.span`
   font-size: 2rem;
   text-align: center;
-  margin: 2rem 0px;
 `;
 
 export default Error;
