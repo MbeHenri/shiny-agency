@@ -1,41 +1,25 @@
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState, useContext, useCallback } from "react";
+import { useState, useContext, useCallback } from "react";
 import { Loader } from "../../utils/Atoms";
 import { ThemeContext } from "../../utils/Context/Theme";
 import { SurveyContext } from "../../utils/Context/Survey";
+import { useFetch } from "../../utils/hooks";
 
 function Survey() {
   const { questionNumber } = useParams();
   const questionNumberInt = parseInt(questionNumber);
   const prevQuestionNumber = questionNumberInt <= 1 ? 1 : questionNumberInt - 1;
   const nextQuestionNumber = questionNumberInt + 1;
-  const [surveyDatas, setSurveyDatas] = useState({});
-  const [isDataLoading, setDataLoading] = useState(false);
+
+  const { isLoading, datas, error } = useFetch(`http://localhost:8000/survey`);
+  const surveyDatas = datas?.surveyData;
+  const isDataLoading = isLoading;
+
   const [response, setResponse] = useState(null);
-  const [error, setError] = useState(false);
 
   const { colors } = useContext(ThemeContext);
   const { saveAnswers, answers } = useContext(SurveyContext);
-
-  useEffect(() => {
-    setDataLoading(true);
-
-    fetch(`http://localhost:8000/survey`)
-      .then((res) => res.json())
-      .then(({ surveyData }) => {
-        setSurveyDatas(surveyData);
-        //setError(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true);
-      })
-      .finally(() => {
-        setDataLoading(false);
-      });
-  }, []);
-
   const saveQuestion = useCallback(
     (answer) => {
       saveAnswers({ [questionNumber]: answer });
@@ -56,58 +40,61 @@ function Survey() {
             Question {questionNumberInt}
           </QuestionTitle>
 
-          <QuestionContent>
-            {isDataLoading ? (
+          {isDataLoading ? (
+            <QuestionContent>
               <Loader />
-            ) : (
-              <span>{surveyDatas[questionNumber]}</span>
-            )}
-          </QuestionContent>
-
-          {answers && (
-            <ResponseBlock>
-              <ResponseButton
-                colors={colors}
-                isSelected={response !== null ? response : false}
-                onClick={() => saveQuestion(true)}
-              >
-                Oui
-              </ResponseButton>
-              <ResponseButton
-                colors={colors}
-                isSelected={response !== null ? !response : false}
-                onClick={() => saveQuestion(false)}
-              >
-                Non
-              </ResponseButton>
-            </ResponseBlock>
+            </QuestionContent>
+          ) : (
+            <>
+              <QuestionContent>
+                <span>{surveyDatas[questionNumber]}</span>
+              </QuestionContent>
+              {answers && (
+                <ResponseBlock>
+                  <ResponseButton
+                    colors={colors}
+                    value={response !== null ? response : false}
+                    onClick={() => saveQuestion(true)}
+                  >
+                    Oui
+                  </ResponseButton>
+                  <ResponseButton
+                    colors={colors}
+                    value={response !== null ? !response : false}
+                    onClick={() => saveQuestion(false)}
+                  >
+                    Non
+                  </ResponseButton>
+                </ResponseBlock>
+              )}
+              <div>
+                <QuestionLink
+                  onClick={() => {
+                    setResponse(null);
+                  }}
+                  colors={colors}
+                  to={`/survey/${prevQuestionNumber}`}
+                >
+                  Précedent
+                </QuestionLink>
+                {surveyDatas[nextQuestionNumber] ? (
+                  <QuestionLink
+                    onClick={() => {
+                      setResponse(null);
+                    }}
+                    colors={colors}
+                    to={`/survey/${nextQuestionNumber}`}
+                  >
+                    Suivant
+                  </QuestionLink>
+                ) : (
+                  <QuestionLink colors={colors} to="/results">
+                    Résultats
+                  </QuestionLink>
+                )}
+              </div>
+            </>
           )}
-          <div>
-            <QuestionLink
-              onClick={() => {
-                setResponse(null);
-              }}
-              colors={colors}
-              to={`/survey/${prevQuestionNumber}`}
-            >
-              Précedent
-            </QuestionLink>
-            {surveyDatas[nextQuestionNumber] ? (
-              <QuestionLink
-                onClick={() => {
-                  setResponse(null);
-                }}
-                colors={colors}
-                to={`/survey/${nextQuestionNumber}`}
-              >
-                Suivant
-              </QuestionLink>
-            ) : (
-              <QuestionLink colors={colors} to="/results">
-                Résultats
-              </QuestionLink>
-            )}
-          </div>
         </QuestionBlock>
       )}
     </>
@@ -148,9 +135,7 @@ const ResponseButton = styled.button`
   cursor: pointer;
   margin: 0px 1rem;
   box-shadow: ${(props) =>
-    props.isSelected
-      ? `0px 0px 0px 2px ${props.colors.primary} inset`
-      : "none"};
+    props.value ? `0px 0px 0px 2px ${props.colors.primary} inset` : "none"};
 `;
 
 const ResponseBlock = styled.div`
