@@ -51,7 +51,9 @@ const CardBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin-top: 2rem;
+  height: 13rem;
 `;
 
 const CardWrapper = styled.div`
@@ -60,7 +62,7 @@ const CardWrapper = styled.div`
   background-color: ${colors.backgroundLight};
   border-radius: 2rem;
 
-  width: 15rem;
+  width: 18rem;
 
   transition: 200ms;
   &:hover {

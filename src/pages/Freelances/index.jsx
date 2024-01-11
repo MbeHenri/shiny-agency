@@ -1,27 +1,25 @@
-import DefaultPicture from "../../assets/target.png";
 import Card from "../../components/Card";
 import styled from "styled-components";
 import colors from "../../utils/style/colors";
-
-const freelanceProfiles = [
-  {
-    name: "Jane Doe",
-    jobTitle: "Devops",
-    picture: DefaultPicture,
-  },
-  {
-    name: "John Doe",
-    jobTitle: "Developpeur frontend",
-    picture: DefaultPicture,
-  },
-  {
-    name: "Jeanne Biche",
-    jobTitle: "Développeuse Fullstack",
-    picture: DefaultPicture,
-  },
-];
+import { useEffect, useState } from "react";
+import { Loader } from "../../utils/Atoms";
 
 function Freelances() {
+  const [FreelanceProfiles, setFreelanceProfiles] = useState([]);
+  const [isDataLoading, setDataLoading] = useState(false);
+
+  useEffect(() => {
+    setDataLoading(true);
+
+    fetch(`http://localhost:8000/freelances`)
+      .then((res) => res.json())
+      .then(({ freelancersList }) => {
+        setFreelanceProfiles(freelancersList);
+        setDataLoading(false);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <div>
       <Title>Trouvez votre prestataire</Title>
@@ -29,16 +27,20 @@ function Freelances() {
         Chez Shiny nous réunissons les meilleurs profils pour vous.
       </SubTitle>
       <CardsContainer>
-        {freelanceProfiles.map((profile, index) => {
-          return (
-            <Card
-              key={`${profile.name}-${index}`}
-              label={profile.jobTitle}
-              picture={profile.picture}
-              title={profile.name}
-            />
-          );
-        })}
+        {isDataLoading ? (
+          <Loader />
+        ) : (
+          FreelanceProfiles.map((profile, index) => {
+            return (
+              <Card
+                key={`${profile.name}-${index}`}
+                label={profile.job}
+                picture={profile.picture}
+                title={profile.name}
+              />
+            );
+          })
+        )}
       </CardsContainer>
     </div>
   );
