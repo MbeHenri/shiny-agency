@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ThemeContext } from "../Context";
+import { ThemeContext } from "../Context/Theme";
 import { createGlobalStyle } from "styled-components";
 
 const StyledGlobalStyle = createGlobalStyle`

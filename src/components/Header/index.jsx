@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logo_light from "../../assets/shiny-logo_shiny-logo-light 1.png";
 import logo_dark from "../../assets/shiny-logo_shiny-logo-dark 1.png";
 import { useContext } from "react";
-import { ThemeContext } from "../../utils/Context";
+import { ThemeContext } from "../../utils/Context/Theme";
 
 function Header() {
   const { theme, colors, toggleTheme } = useContext(ThemeContext);

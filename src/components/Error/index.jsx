@@ -2,7 +2,7 @@ import { ContainerBlock } from "../../utils/ContainerBlock";
 import styled from "styled-components";
 import error from "../../assets/undraw_page_not_found_su7k 1.svg";
 import { useContext } from "react";
-import { ThemeContext } from "../../utils/Context";
+import { ThemeContext } from "../../utils/Context/Theme";
 
 function Error() {
 

@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { Loader } from "../../utils/Atoms";
 import styled from "styled-components";
-import { ThemeContext } from "../../utils/Context";
+import { ThemeContext } from "../../utils/Context/Theme";
 
 function Survey() {
   const { questionNumber } = useParams();

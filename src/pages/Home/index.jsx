@@ -3,7 +3,7 @@ import img_home from "../../assets/undraw_Resume_re_hkth 1.svg";
 import { Link } from "react-router-dom";
 import { ContainerBlock } from "../../utils/ContainerBlock";
 import { useContext } from "react";
-import { ThemeContext } from "../../utils/Context";
+import { ThemeContext } from "../../utils/Context/Theme";
 
 function Home() {
   const { colors } = useContext(ThemeContext);

@@ -5,7 +5,7 @@ import Freelances from "./pages/Freelances";
 import Survey from "./pages/Survey";
 import Header from "./components/Header";
 import Error from "./components/Error/index";
-import { ThemeProvider } from "./utils/Context";
+import { ThemeProvider } from "./utils/Context/Theme";
 import { GlobalStyle } from "./utils/style/GlobalStyle";
 
 function Routers() {

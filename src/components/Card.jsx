@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import DefaultPicture from "../assets/target.png";
 import styled from "styled-components";
 import { useContext } from "react";
-import { ThemeContext } from "../utils/Context";
+import { ThemeContext } from "../utils/Context/Theme";
 
 function Card({ label, title, picture }) {
   const { colors } = useContext(ThemeContext);

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Loader } from "../../utils/Atoms";
 import { useContext } from "react";
-import { ThemeContext } from "../../utils/Context";
+import { ThemeContext } from "../../utils/Context/Theme";
 
 function Freelances() {
   const [FreelanceProfiles, setFreelanceProfiles] = useState([]);
