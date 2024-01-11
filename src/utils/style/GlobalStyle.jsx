@@ -19,6 +19,9 @@ const StyledGlobalStyle = createGlobalStyle`
     color : ${({ colors }) => colors.on_background_body};
     margin: 0;  
   }
+  button{
+    color : ${({ colors }) => colors.on_background_body};
+  }
 `;
 
 export function GlobalStyle() {
