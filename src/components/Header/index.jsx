@@ -32,7 +32,7 @@ function Header() {
   );
 }
 
-const ButtonThemeStyle = styled.button`
+export const ButtonThemeStyle = styled.button`
   background-color: transparent;
   border: 3px ${({ colors }) => colors.primary} solid;
   font-size: 1.5rem;

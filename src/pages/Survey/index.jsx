@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useParams, Link } from "react-router-dom";
-import { useState, useContext, useCallback } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useContext, useCallback } from "react";
 import { Loader } from "../../utils/Atoms";
 import { ThemeContext } from "../../utils/Context/Theme";
 import { SurveyContext } from "../../utils/Context/Survey";
@@ -16,16 +16,16 @@ function Survey() {
   const surveyDatas = datas?.surveyData;
   const isDataLoading = isLoading;
 
-  const [response, setResponse] = useState(null);
+  const navigate = useNavigate();
 
   const { colors } = useContext(ThemeContext);
   const { saveAnswers, answers } = useContext(SurveyContext);
   const saveQuestion = useCallback(
     (answer) => {
       saveAnswers({ [questionNumber]: answer });
-      setResponse(answer);
+      navigate(`/survey/${nextQuestionNumber}`);
     },
-    [questionNumber, saveAnswers]
+    [questionNumber, nextQuestionNumber, saveAnswers, navigate]
   );
 
   return (
@@ -53,14 +53,20 @@ function Survey() {
                 <ResponseBlock>
                   <ResponseButton
                     colors={colors}
-                    value={response !== null ? response : false}
+                    value={
+                      answers[questionNumber] !== undefined &&
+                      answers[questionNumber]
+                    }
                     onClick={() => saveQuestion(true)}
                   >
                     Oui
                   </ResponseButton>
                   <ResponseButton
                     colors={colors}
-                    value={response !== null ? !response : false}
+                    value={
+                      answers[questionNumber] !== undefined &&
+                      !answers[questionNumber]
+                    }
                     onClick={() => saveQuestion(false)}
                   >
                     Non
@@ -69,9 +75,6 @@ function Survey() {
               )}
               <div>
                 <QuestionLink
-                  onClick={() => {
-                    setResponse(null);
-                  }}
                   colors={colors}
                   to={`/survey/${prevQuestionNumber}`}
                 >
@@ -79,9 +82,6 @@ function Survey() {
                 </QuestionLink>
                 {surveyDatas[nextQuestionNumber] ? (
                   <QuestionLink
-                    onClick={() => {
-                      setResponse(null);
-                    }}
                     colors={colors}
                     to={`/survey/${nextQuestionNumber}`}
                   >
